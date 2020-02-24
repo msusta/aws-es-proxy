@@ -20,10 +20,10 @@ import (
 	// log "github.com/Sirupsen/logrus"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/aws/signer/v4"
 	humanize "github.com/dustin/go-humanize"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	v4 "github.com/aws/aws-sdk-go/aws/signer/v4"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -540,10 +540,8 @@ func main() {
 	}
 
 	if p.logtofile {
-		u1 := uuid.NewV4()
-		u2 := uuid.NewV4()
-		requestFname := fmt.Sprintf("request-%s.log", u1.String())
-		responseFname := fmt.Sprintf("response-%s.log", u2.String())
+		requestFname := fmt.Sprintf("request-%s.log", uuid.NewV4().String())
+		responseFname := fmt.Sprintf("response-%s.log", uuid.NewV4().String())
 
 		if fileRequest, err = os.Create(requestFname); err != nil {
 			log.Println(err.Error())
