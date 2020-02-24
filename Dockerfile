@@ -5,10 +5,13 @@ COPY . .
 
 RUN apk add --update bash curl git && \
     rm /var/cache/apk/*
+RUN mkdir -p $$GOPATH/bin && \
+    curl https://glide.sh/get | sh
 
+RUN glide install
 RUN CGO_ENABLED=0 GOOS=linux go build -o aws-es-proxy
 
-FROM alpine:3.10
+FROM alpine:3
 LABEL name="aws-es-proxy" \
     version="latest"
 
